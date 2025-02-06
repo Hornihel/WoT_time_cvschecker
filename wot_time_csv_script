@@ -1,0 +1,22 @@
+
+import csv
+from datetime import datetime, timedelta
+total_time = timedelta()
+with open('WOT_Game_Sessions.csv', newline='') as csvfile:
+    
+    spamreader = csv.reader(csvfile, delimiter=',', quotechar='|')  # Changed delimiter to ','
+    
+    next(spamreader) #Skips the header row
+
+    for row in spamreader:
+        start_time_str, end_time_str, ip_address = row[0].strip('"'), row[1].strip('"'), row[2]
+        
+        # Convert string timestamps to datetime objects
+        start_time = datetime.strptime(start_time_str, "%Y-%m-%d %H:%M:%S.%f")
+        end_time = datetime.strptime(end_time_str, "%Y-%m-%d %H:%M:%S.%f")
+        
+        # Calculate the time difference
+        time_difference = end_time - start_time
+        total_time += time_difference
+        
+print(f'Total Time Spent is {total_time.total_seconds()//3600} hours')
